@@ -100,24 +100,7 @@ impl eframe::App for MandelbrotViewerApp {
                 response.rect,
             );
             let from_screen = to_screen.inverse();
-            
-            let rect = Shape::Rect(egui::epaint::RectShape {
-                rect: emath::Rect {
-                    min: Pos2::new(700.0, 100.0),
-                    max: Pos2::new(800.0, 200.0),
-                },
-                rounding: Rounding::ZERO,
-                fill: Color32::RED,
-                stroke: egui::Stroke {
-                    width: 1.0,
-                    color: Color32::BLUE,
-                },
-                fill_texture_id: egui::TextureId::Managed(0),
-                uv: egui::Rect::ZERO,
-            });
 
-            painter.add(rect);
-            
             if self.lines.is_empty() {
                 self.lines.push(vec![]);
             }
@@ -166,6 +149,23 @@ impl eframe::App for MandelbrotViewerApp {
                 });
 
             painter.extend(shapes);
+
+            let rect = Shape::Rect(egui::epaint::RectShape {
+                rect: emath::Rect {
+                    min: Pos2::new(700.0, 100.0),
+                    max: Pos2::new(800.0, 200.0),
+                },
+                rounding: Rounding::ZERO,
+                fill: Color32::RED,
+                stroke: egui::Stroke {
+                    width: 1.0,
+                    color: Color32::BLUE,
+                },
+                fill_texture_id: egui::TextureId::Managed(0),
+                uv: egui::Rect::ZERO,
+            });
+
+            painter.add(rect);
         });
     }
 }
