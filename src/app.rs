@@ -55,7 +55,10 @@ impl eframe::App for MandelbrotViewerApp {
         egui::SidePanel::left("left_side_panel").show(ctx, |ui| {
             ui.vertical(|ui| {
                 ui.label(format!("Pointer Pos: {:?}", self.pointer_pos));
-                ui.label(format!("Canvas Pos: {:?}", self.pointer_pos))
+                ui.label(format!("Canvas Pos: {:?}", self.pointer_pos));
+                if ui.button("Clear Painting").clicked() {
+                    self.lines.clear();
+                }
             })
         });
 
