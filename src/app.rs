@@ -1,4 +1,4 @@
-use egui::{Color32, Rounding, Shape, Stroke};
+use egui::{Color32, Rounding, Shape, Stroke, epaint::TextureManager, Image, ColorImage};
 use emath::Pos2;
 
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
@@ -12,10 +12,18 @@ pub struct MandelbrotViewerApp {
     lines: Vec<Vec<Pos2>>,
     stroke: Stroke,
     canvas_pos: emath::Pos2,
+    // image: ColorImage,
 }
 
 impl Default for MandelbrotViewerApp {
     fn default() -> Self {
+        // Generate random image of 100x100
+        // let image_data: [u8; 100*100] = [0; 100*100];
+        // let image = image::load_from_memory(&image_data).expect("Failed to create blank image");
+        // let size = [image.width() as _, image.height() as _];
+        // let image_buffer = image.to_rgba8();
+        // let pixels = image_buffer.as_flat_samples();
+        
         Self {
             x: 0,
             y: 0,
@@ -24,7 +32,9 @@ impl Default for MandelbrotViewerApp {
             canvas_pos: emath::Pos2 { x: 0.0, y: 0.0 },
             lines: Default::default(),
             stroke: Stroke::new(1.0, Color32::from_rgb(25, 200, 100)),
+            // image: ColorImage::from_rgba_unmultiplied(size, pixels.as_slice()),
         }
+
     }
 }
 
@@ -39,12 +49,13 @@ impl MandelbrotViewerApp {
         if let Some(storage) = cc.storage {
             return eframe::get_value(storage, eframe::APP_KEY).unwrap_or_default();
         }
-
+        
         Default::default()
     }
 }
 
 impl eframe::App for MandelbrotViewerApp {
+
     /// Called by the frame work to save state before shutdown
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
         eframe::set_value(storage, eframe::APP_KEY, self);
@@ -62,38 +73,7 @@ impl eframe::App for MandelbrotViewerApp {
             })
         });
 
-        // egui::CentralPanel::default().show(ctx, |ui| {
-        //     let (mut response, painter) =
-        //         ui.allocate_painter(ui.available_size_before_wrap(), egui::Sense::hover());
-
-        //     // let to_screen = emath::RectTransform::from_to(
-        //     //     egui::Rect::from_min_size(egui::Pos2::ZERO, response.rect.),
-        //     //     response.rect,
-        //     // );
-        //     let from_screen = to_screen.inverse();
-
-        //     if let Some(pointer_pos) = response.hover_pos() {
-        //         let canvas_pos = from_screen * pointer_pos;
-        //         self.can = canvas_pos;
-
-        //         let rect = Shape::Rect(egui::epaint::RectShape {
-        //             rect: emath::Rect {
-        //                 min: Pos2::new(1.0, 1.0),
-        //                 max: Pos2::new(5.0, 100.0),
-        //             },
-        //             rounding: Rounding::ZERO,
-        //             fill: Color32::RED,
-        //             stroke: egui::Stroke {
-        //                 width: 1.0,
-        //                 color: Color32::BLUE,
-        //             },
-        //             fill_texture_id: egui::TextureId::Managed(0),
-        //             uv: egui::Rect::ZERO,
-        //         });
-
-        //         painter.add(rect);
-        //     }
-        // });
+    
         egui::CentralPanel::default().show(ctx, |ui| {
             let (mut response, painter) =
                 ui.allocate_painter(ui.available_size_before_wrap(), egui::Sense::hover());
@@ -169,6 +149,8 @@ impl eframe::App for MandelbrotViewerApp {
             });
 
             painter.add(rect);
+            
+            // painter.image(texture_id, rect, uv, tint)
         });
     }
 }

@@ -20,6 +20,8 @@ log = "0.4"
 serde = { version = "1", features = ["derive"] }
 web-time = "0.2.3"
 emath = "0.24.1"
+egui_extras = { version = "0.24.1", features = ["image"]}
+image = {version = "0.24.7", features = ["png"]}
 
 # native:
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

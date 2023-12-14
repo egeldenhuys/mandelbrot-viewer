@@ -15,7 +15,10 @@ fn main() -> eframe::Result<()> {
     eframe::run_native(
         "eframe template",
         native_options,
-        Box::new(|cc| Box::new(mandelbrot_viewer::MandelbrotViewerApp::new(cc))),
+        Box::new(|cc| {
+            egui_extras::install_image_loaders(&cc.egui_ctx);
+            Box::new(mandelbrot_viewer::MandelbrotViewerApp::new(cc))
+        }),
     )
 }
 
@@ -32,7 +35,10 @@ fn main() {
             .start(
                 "the_canvas_id", // hardcode it
                 web_options,
-                Box::new(|cc| Box::new(mandelbrot_viewer::MandelbrotViewerApp::new(cc))),
+                Box::new(|cc| {
+                    egui_extras::install_image_loaders(&cc.egui_ctx);
+                    Box::new(mandelbrot_viewer::MandelbrotViewerApp::new(cc));
+                }),
             )
             .await
             .expect("failed to start eframe");
